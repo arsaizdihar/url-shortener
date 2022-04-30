@@ -1,5 +1,5 @@
 import { ApiError, Provider, Session, User } from "@supabase/supabase-js";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { supabase } from "../src/utils/supabaseClient";
 
@@ -7,15 +7,20 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const emailRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState(false);
+
+  useEffect(() => {
+    emailRef.current?.focus();
+  }, []);
   return (
-    <div className="w-full h-screen flex justify-center items-center">
+    <div className="w-full flex justify-center items-center h-[calc(100vh-72px)]">
       <form
-        className="p-4 bg-white shadow-md hover:shadow-xl duration-300 w-full max-w-xs"
+        className="p-6 rounded-md bg-white dark:bg-neutral-900 shadow-md hover:shadow-xl duration-300 w-full max-w-xs"
         noValidate
         onSubmit={async (e) => {
           e.preventDefault();
           if (loading) return;
           if (emailRef.current?.validationMessage) {
+            emailRef.current.focus();
             return setError(true);
           }
           setLoading(true);
@@ -49,14 +54,14 @@ function Login() {
       >
         <h1 className="text-2xl font-medium mb-4">LOGIN</h1>
         <div>
-          <label htmlFor="email" className="text-gray-700">
+          <label htmlFor="email" className="text-gray-700 dark:text-gray-300">
             Email
           </label>
           <input
             ref={emailRef}
             type="email"
             id="email"
-            className="form-input mt-1 block w-full rounded-md bg-gray-100 border-transparentfocus:border-gray-500 focus:bg-white focus:ring-0 border-none"
+            className="form-input mt-1 block w-full rounded-md bg-gray-100 border-transparentfocus:border-gray-500 focus:bg-white focus:ring-0 border-none text-black"
             placeholder="Email"
           />
           {error && (
@@ -64,7 +69,7 @@ function Login() {
           )}
         </div>
         <button
-          className="w-full py-3 px-4 bg-violet-500 hover:bg-violet-400 text-white font-medium rounded-md mt-2 disabled:bg-violet-400"
+          className="w-full py-3 px-4 bg-violet-500 hover:bg-violet-400 text-white dark:bg-violet-800 dark:hover:bg-violet-700 font-medium rounded-md mt-2 disabled:bg-violet-400"
           disabled={loading}
         >
           Login
