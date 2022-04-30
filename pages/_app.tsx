@@ -1,8 +1,17 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import type { AppProps } from "next/app";
+import { Toaster } from "react-hot-toast";
+import { AuthProvider } from "../src/components/AuthContext";
+import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  return (
+    <>
+      <AuthProvider>
+        <Component {...pageProps} />
+        <Toaster />
+      </AuthProvider>
+    </>
+  );
 }
 
-export default MyApp
+export default MyApp;
