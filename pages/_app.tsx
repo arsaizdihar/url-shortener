@@ -1,29 +1,57 @@
-import { ThemeProvider } from "next-themes";
+import {
+  ChakraProvider,
+  extendTheme,
+  Flex,
+  theme as defaultTheme,
+} from "@chakra-ui/react";
+import { mode } from "@chakra-ui/theme-tools";
 import type { AppProps } from "next/app";
 import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "../src/components/AuthContext";
+import Footer from "../src/components/Footer";
 import NavBar from "../src/components/NavBar";
 import "../styles/globals.css";
+
+const theme = extendTheme({
+  fonts: {
+    heading: `Inter, ${defaultTheme.fonts.heading}`,
+    body: `Inter, ${defaultTheme.fonts.body}`,
+  },
+  styles: {
+    global: (props: any) => ({
+      body: {
+        bgColor: mode("white", "black")(props),
+      },
+    }),
+  },
+});
+
+function DefaultLayout({ children }: { children?: React.ReactNode }) {
+  return children;
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
   const isError = (Component as any).isError;
+  const Layout = (Component as any).Layout || DefaultLayout;
   if (isError)
     return (
-      <ThemeProvider attribute="class">
-        <Component {...pageProps} />
-      </ThemeProvider>
+      <ChakraProvider>
+        <Component {...pageProps} />;
+      </ChakraProvider>
     );
   return (
-    <div className="relative bg-white dark:bg-black overflow-hidden min-h-screen">
-      <div className="max-w-7xl mx-auto">
-        <ThemeProvider attribute="class">
-          <AuthProvider>
-            <NavBar />
+    <ChakraProvider theme={theme}>
+      <AuthProvider>
+        <Flex w="full" direction={"column"} minH="100vh">
+          <NavBar />
+          <Layout>
             <Component {...pageProps} />
-            <Toaster />
-          </AuthProvider>
-        </ThemeProvider>
-      </div>
-    </div>
+          </Layout>
+          <Footer />
+          <Toaster />
+        </Flex>
+      </AuthProvider>
+    </ChakraProvider>
   );
 }
 

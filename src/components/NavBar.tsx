@@ -1,59 +1,66 @@
 /* eslint-disable @next/next/no-img-element */
-import { MoonIcon, SunIcon } from "@heroicons/react/outline";
-import { useTheme } from "next-themes";
-import Link from "next/link";
+import { MoonIcon, SunIcon } from "@chakra-ui/icons";
+import {
+  Button,
+  HStack,
+  Text,
+  useColorMode,
+  useColorModeValue,
+} from "@chakra-ui/react";
+import NextLink from "next/link";
 import React from "react";
 import { useAuth } from "./AuthContext";
 
 function NavBar() {
   const user = useAuth();
+  const { colorMode, toggleColorMode } = useColorMode();
   const navigation = [
     { name: "Log in", href: "/login", hidden: user !== null },
     { name: "Dashboard", href: "/dashboard", hidden: user === null },
     { name: "Log out", href: "/logout", hidden: user === null },
   ];
-  const { resolvedTheme, setTheme } = useTheme();
   return (
-    <div className="relative z-10 pb-8 bg-white dark:bg-black w-full">
-      <nav
-        className="relative flex items-center justify-between sm:h-10 w-full pt-6 px-4 sm:px-6 lg:px-8"
-        aria-label="Global"
+    <HStack
+      bgColor={useColorModeValue("gray.50", "gray.900")}
+      justifyContent="center"
+    >
+      <HStack
+        position={"relative"}
+        zIndex={10}
+        py={8}
+        maxW="container.xl"
+        w="full"
+        as={"nav"}
+        justifyContent="space-between"
+        h={{ base: "auto", sm: "10" }}
+        px={{ base: 4, sm: 6, lg: 8 }}
       >
-        <div className="flex items-center">
-          <div className="flex items-center flex-grow flex-shrink-0 lg:flex-grow-0">
-            <div className="flex items-center justify-between w-full md:w-auto">
-              <Link href="/">
-                <a className="text-xl font-bold tracking-widest font-mono">
-                  Shorten
-                </a>
-              </Link>
-            </div>
-          </div>
-          <div className="space-x-2 md:pl-10 md:space-x-4 flex">
-            {navigation.map(
-              (item) =>
-                !item.hidden && (
-                  <Link href={item.href} key={item.name}>
-                    <a className="font-medium text-gray-500 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100">
-                      {item.name}
-                    </a>
-                  </Link>
-                )
-            )}
-          </div>
-        </div>
-        <button
-          onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-          className="bg-black dark:bg-white p-2 rounded-md text-white dark:text-black transition-colors duration-500"
-        >
-          {resolvedTheme === "light" ? (
-            <SunIcon width={16} height={16} />
-          ) : (
-            <MoonIcon width={16} height={16} />
-          )}
-        </button>
-      </nav>
-    </div>
+        <HStack spacing={{ base: 2, md: 4 }}>
+          <NextLink href="/" passHref>
+            <Text
+              as="a"
+              fontFamily={"mono"}
+              fontWeight="bold"
+              fontSize={"xl"}
+              mr={{ base: 8, md: 6 }}
+              letterSpacing="widest"
+            >
+              Shorten
+            </Text>
+          </NextLink>
+          {navigation.map((item) => (
+            <NextLink href={item.href} key={item.href} passHref>
+              <Text as="a" hidden={item.hidden} fontWeight="medium">
+                {item.name}
+              </Text>
+            </NextLink>
+          ))}
+        </HStack>
+        <Button onClick={toggleColorMode} colorScheme="gray">
+          {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+        </Button>
+      </HStack>
+    </HStack>
   );
 }
 

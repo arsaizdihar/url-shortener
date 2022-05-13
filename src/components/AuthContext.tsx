@@ -22,7 +22,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => {
       authListener?.unsubscribe();
     };
-  }, []);
+  }, [router]);
   return <AuthContext.Provider value={user}>{children}</AuthContext.Provider>;
 }
 
