@@ -82,11 +82,14 @@ function Login() {
         <FormControl py="4">
           <FormLabel htmlFor="email">Email</FormLabel>
           <Input
+            autoFocus
             ref={emailRef}
             type="email"
             id="email"
             variant={"filled"}
             placeholder="Email"
+            isInvalid={error}
+            focusBorderColor={useColorModeValue("purple.500", "purple.400")}
           />
           {error && (
             <Text color={errorColor} fontSize={"sm"} pl={1} mt={0.5}>

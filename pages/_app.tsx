@@ -41,7 +41,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     );
   return (
     <ChakraProvider theme={theme}>
-      <AuthProvider>
+      <AuthProvider value={pageProps.user}>
         <Flex w="full" direction={"column"} minH="100vh">
           <NavBar />
           <Layout>

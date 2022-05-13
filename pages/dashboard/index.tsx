@@ -5,36 +5,32 @@ import {
   Heading,
   HStack,
   Link,
-  Skeleton,
   Stack,
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { GetServerSideProps } from "next";
 import NextLink from "next/link";
-import React, { useEffect, useState } from "react";
-import { useAuth } from "../../src/components/AuthContext";
+import React, { useEffect } from "react";
 import DashboardLayout from "../../src/layouts/DashboardLayout";
 import { ILink } from "../../src/type";
 import { supabase } from "../../src/utils/supabaseClient";
 
-function DashboardPage() {
-  const user = useAuth();
-  const [links, setLinks] = useState<Array<ILink>>([]);
-  const [isLoading, setIsLoading] = useState(true);
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const { user } = await supabase.auth.api.getUserByCookie(req);
+  if (!user) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+  const res = await supabase.from("link").select("*").eq("user_id", user.id);
+  return { props: { user, links: res.data || [] } };
+};
 
-  useEffect(() => {
-    if (user) {
-      supabase
-        .from("link")
-        .select("*")
-        .eq("user_id", user.id)
-        .then((res) => {
-          setLinks(res.data || []);
-          setIsLoading(false);
-        });
-    }
-  }, [user]);
-
+function DashboardPage({ links }: { links: ILink[] }) {
   useEffect(() => {}, []);
   return (
     <>
@@ -51,29 +47,21 @@ function DashboardPage() {
         <Heading as="h2" size="md" fontWeight={"medium"}>
           Your links
         </Heading>
-        {isLoading ? (
-          <Stack mt={4}>
-            <Skeleton height={8} width="80%" />
-            <Skeleton height={8} />
-            <Skeleton height={8} width="65%" />
-          </Stack>
-        ) : (
-          <Stack mt={4} as="ul" spacing={4}>
-            {links.map((link) => (
-              <LinkItem key={link.id} {...link} />
-            ))}
-            <NextLink href="/dashboard/add" passHref>
-              <Button
-                as="a"
-                leftIcon={<PlusSquareIcon />}
-                colorScheme="purple"
-                variant="solid"
-              >
-                Add new link
-              </Button>
-            </NextLink>
-          </Stack>
-        )}
+        <Stack mt={4} as="ul" spacing={4}>
+          {links.map((link) => (
+            <LinkItem key={link.id} {...link} />
+          ))}
+          <NextLink href="/dashboard/add" passHref>
+            <Button
+              as="a"
+              leftIcon={<PlusSquareIcon />}
+              colorScheme="purple"
+              variant="solid"
+            >
+              Add new link
+            </Button>
+          </NextLink>
+        </Stack>
       </Box>
     </>
   );

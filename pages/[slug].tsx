@@ -14,7 +14,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   return {
     redirect: {
       destination: res.data.url,
-      permanent: false,
+      permanent: process.env.NODE_ENV === "production",
     },
   };
 };
