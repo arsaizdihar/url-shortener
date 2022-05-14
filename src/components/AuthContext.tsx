@@ -29,7 +29,9 @@ export function AuthProvider({
   const [user, setUser] = useState<User | null>(value);
   const router = useRouter();
   useEffect(() => {
-    setUser(supabase.auth.user());
+    const user = supabase.auth.user();
+    setUser(user);
+    if (user) handleAuthChange("SIGNED_IN", supabase.auth.session());
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (event, session) => {
         handleAuthChange(event, session);
