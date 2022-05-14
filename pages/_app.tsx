@@ -6,6 +6,7 @@ import {
 } from "@chakra-ui/react";
 import { mode } from "@chakra-ui/theme-tools";
 import type { AppProps } from "next/app";
+import Head from "next/head";
 import { Toaster } from "react-hot-toast";
 import { AuthProvider } from "../src/components/AuthContext";
 import Footer from "../src/components/Footer";
@@ -42,6 +43,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider theme={theme}>
       <AuthProvider value={pageProps.user}>
+        <Head>
+          <title>Shorten by Arsa</title>
+        </Head>
         <Flex w="full" direction={"column"} minH="100vh">
           <NavBar />
           <Layout>
