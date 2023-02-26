@@ -8,7 +8,6 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
-import React from "react";
 import { useAuth } from "./AuthContext";
 
 function NavBar() {
@@ -36,7 +35,7 @@ function NavBar() {
         px={{ base: 4, sm: 6, lg: 8 }}
       >
         <HStack spacing={{ base: 2, md: 4 }}>
-          <NextLink href="/" passHref>
+          <NextLink href="/" passHref legacyBehavior>
             <Text
               as="a"
               fontFamily={"mono"}
@@ -49,7 +48,7 @@ function NavBar() {
             </Text>
           </NextLink>
           {navigation.map((item) => (
-            <NextLink href={item.href} key={item.href} passHref>
+            <NextLink href={item.href} key={item.href} passHref legacyBehavior>
               <Text as="a" hidden={item.hidden} fontWeight="medium">
                 {item.name}
               </Text>

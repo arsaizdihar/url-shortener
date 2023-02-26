@@ -1,5 +1,4 @@
 import Link from "next/link";
-import React from "react";
 
 function Error() {
   return (
@@ -30,10 +29,11 @@ function Error() {
             The page you’re looking for doesn’t exist.
           </p>
 
-          <Link href="/">
-            <a className="px-6 py-2 text-sm font-semibold text-violet-800 bg-violet-100 rounded-md hover:bg-violet-200">
-              Go home
-            </a>
+          <Link
+            href="/"
+            className="px-6 py-2 text-sm font-semibold text-violet-800 bg-violet-100 rounded-md hover:bg-violet-200"
+          >
+            Go home
           </Link>
         </div>
       </div>

@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useAuth } from "../../src/components/AuthContext";
 import DashboardLayout from "../../src/layouts/DashboardLayout";
 import { supabase } from "../../src/utils/supabaseClient";
@@ -75,7 +75,7 @@ function AddUrl() {
           .then(() => router.push("/dashboard"));
       }}
     >
-      <Link href="/dashboard" passHref>
+      <Link href="/dashboard" passHref legacyBehavior>
         <Button as="a" variant={"ghost"}>
           <ArrowBackIcon />
         </Button>

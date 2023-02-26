@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { GetServerSideProps } from "next";
 import NextLink from "next/link";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import DashboardLayout from "../../src/layouts/DashboardLayout";
 import { ILink } from "../../src/type";
 import { supabase } from "../../src/utils/supabaseClient";
@@ -55,7 +55,7 @@ function DashboardPage({ links }: { links: ILink[] }) {
           {links.map((link) => (
             <LinkItem key={link.id} {...link} />
           ))}
-          <NextLink href="/dashboard/add" passHref>
+          <NextLink href="/dashboard/add" passHref legacyBehavior>
             <Button
               as="a"
               leftIcon={<PlusSquareIcon />}
@@ -82,7 +82,7 @@ function LinkItem(p: ILink) {
       bgColor={useColorModeValue("gray.100", "gray.700")}
     >
       <Stack>
-        <NextLink href={`/${p.slug}`} passHref>
+        <NextLink href={`/${p.slug}`} passHref legacyBehavior>
           <Link color={useColorModeValue("purple.500", "purple.300")}>
             link.arsaizdihar.com/{p.slug}
           </Link>

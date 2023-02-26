@@ -35,7 +35,7 @@ const Home: NextPage = () => {
         Every long urls deserve a short one.
       </Text>
       <Box pt="6">
-        <Link href={user ? "/dashboard" : "/login"} passHref>
+        <Link href={user ? "/dashboard" : "/login"} passHref legacyBehavior>
           <Button as="a" colorScheme={"purple"} size="lg">
             Get started
           </Button>
